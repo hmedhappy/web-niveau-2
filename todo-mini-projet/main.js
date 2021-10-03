@@ -53,27 +53,45 @@ function ajouterTodo(){
 	// recuperer valuer de l'input
 	let text  = input.value
 
+	// validation 
 	if (text.length==0){
 		input.style.border="1px solid red"
-		
 		return
 	}else{
 		input.style.border="1px solid grey"
-
 	}
 	//ul.innerHTML +="<li><input type='checkbox'/>"+text+"</li>"
 	// creer le todo 
+
 	let li = document.createElement("li")
-	
 	let checkbox = document.createElement("input")
 	let span = document.createElement("span")
 	// remplir le todo 
 	span.innerText = text
 
 	checkbox.setAttribute("type","checkbox")
-	
-	// ajouter le todo a l'ul	
-	li.appendChild(checkbox)
+	/*checkbox.onclick = ()=>{
+		console.log(checkbox)
+		if(checkbox.checked)
+			li.style.textDecoration="line-through"
+		else 
+			li.style.textDecoration="none"		
+	}*/
+	// ajouter le todo a l'ul
+	li.appendChild(checkbox)	
 	li.appendChild(span)
 	ul.appendChild(li)
+	document.querySelectorAll("li").forEach(li=>{
+	console.log()
+	let checkbox=  li.querySelector("input")
+	checkbox.onclick = ()=>{
+		console.log(li)
+		if(checkbox.checked)
+			li.style.textDecoration="line-through"
+		else 
+			li.style.textDecoration="none"
+	}
+	})
 }
+
+
