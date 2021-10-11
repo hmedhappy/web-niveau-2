@@ -22,16 +22,21 @@
 	</p>
 </body>
 <script type="module">
-	let url = "http://api.exchangeratesapi.io/v1/latest?access_key=01516af766696ad129b060a627689d8e"
+	let date = "1980-12-31"
+
+	let url = `http://api.exchangeratesapi.io/v1/${(date) ? date : "latest"}?access_key=01516af766696ad129b060a627689d8e`
+	/*if (date) {
+		let url = "http://api.exchangeratesapi.io/v1/" + date + "?access_key = 01516af766696ad129b060a627689d8e"
+	}*/
 	let rates
-	/*fetch(url)
+	fetch(url)
 		.then(response => response.json())
 		.then(data => {
 			rates = data.rates
 		})
 		.catch(error => {
 			console.log("error :", error)
-		})*/
+		})
 
 	async function getData() {
 

@@ -6,10 +6,7 @@ let todos = JSON.parse(localStorage.getItem('todos'))
 console.log(typeof(todos))
 
 //afficher les todos existente 
-
-
-
-// 
+ 
 // selectionner les elements html
 let input = document.querySelector("input")
 let button = document.querySelector("button")
@@ -19,7 +16,7 @@ let ul = document.querySelector("ul")
 function loadOldTodos(){
 	if(todos){
 		todos.map(todo =>{
-			addToUl(todo.todo,todo.checked)
+			addToUl(todo.todo,todo.checked,todo.id)
 		})
 	}
 	else{
@@ -31,6 +28,12 @@ loadOldTodos()
 
 button.onclick = ()=>{
 	ajouterTodo()
+	
+}
+input.onkeydown = (e)=>{
+	if(e.keyCode == 13){
+		ajouterTodo()
+	}
 }
 
 function ajouterTodo(){
@@ -45,7 +48,9 @@ function ajouterTodo(){
 	}
 	addToUl(text,false)
 	let todo = {
-		todo : text,checked:false
+		todo : text,
+		checked:false,
+		id:todos.length+1
 	}
 	console.log(todos)
 	todos.push(todo)
@@ -53,13 +58,20 @@ function ajouterTodo(){
 	localStorage.setItem("todos",JSON.stringify(todos))
 	//ul.innerHTML +="<li><input type='checkbox'/>"+text+"</li>"
 	// creer le todo 
+	cleanInput()
 }
 
-function addToUl(text,checked){
+function addToUl(text,checked,id){
 	let li = document.createElement("li")
 	let checkbox = document.createElement("input")
 	let span = document.createElement("span")
 	// remplir le todo 
+	if(id){
+		li.setAttribute("id",id)
+	}else{
+		li.setAttribute("id",todos.length+1)
+
+	}
 	span.innerText = text
 	checkbox.setAttribute("type","checkbox")
 	checkbox.checked=checked
@@ -68,8 +80,31 @@ function addToUl(text,checked){
 	li.appendChild(span)
 	ul.appendChild(li)
 	
-	checkbox.onclick = ()=>{
-		checkboxStyle(checkbox,li)
+	checkbox.onclick = (e)=>{
+		let id = e.target.parentNode.id
+		todos.map(todo=>{
+			if(id==todo.id){
+				todo.checked=!todo.checked
+			}
+		})
+		localStorage.setItem("todos",JSON.stringify(todos))
+
+		checkboxStyle(checkbox,e.target.parentNode)
+	}
+	checkbox.onkeydown = (e)=>{
+		console.log(typeof(e.key))
+		
+		if( e.key == "Enter"){
+			let id = e.target.parentNode.id
+			todos.map(todo=>{
+				if(id==todo.id){
+					todo.checked=!todo.checked
+				}
+			})
+			localStorage.setItem("todos",JSON.stringify(todos))
+	
+			checkboxStyle(checkbox,e.target.parentNode)
+		}
 	}
 	
 }
@@ -81,6 +116,7 @@ function checkboxStyle(checkbox,li){
 	else 
 		li.style.textDecoration="none"
 }
+
 // Persistence des données ? 
 //localStorage.setItem("x",5)
 
@@ -99,3 +135,7 @@ console.log(localStorage.getItem("x"))
 
 // les types ? boolean / number / string
 // 
+
+function cleanInput(){
+	input.value="";
+}
